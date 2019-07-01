@@ -12,13 +12,14 @@ print("*" * 70 + '\n')
 while True:
     target = input('Target: ')
     try:
+        # Translates a host name to the IPv4 address format
         ip = socket.gethostbyname(target)
         break
     except:
         print('Please enter a valid IPv4 address or domain name.\n')
 
 print("\n" + "*" * 70)
-print('If you want to scan any specific port enter it below.\nIf you leave it blank it will scan common TCP ports.')
+print('Please select bellow, one at a time, the specific ports you wish to scan.\nIf left blank, it will scan common TCP ports.')
 print("*" * 70 + '\n')
 
 while True:
@@ -26,8 +27,9 @@ while True:
     if port == '':
         break
     elif port.isdigit() == False:
-        print ('Please enter a decimal value / a single port at a time.\n')
+        print ('Please enter a positive integer / a single port at a time.\n')
         continue
+    # If the user wants to scan any specific port, then the program will only scan the ports that he requested
     elif ports == [20, 21, 22, 23, 25, 53, 67, 68, 80, 110, 143, 161, 162, 433, 990, 3389, 8080, 8443]:
         ports = []
     port = int(port)
@@ -40,6 +42,8 @@ print("*" * 70)
 for port in ports:
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.settimeout(0.1)
+    # Connects to a remote socket like .connect(), but connect_ex() also returns an error indicator,
+    # which is 0 if the operation is successful
     result = s.connect_ex((ip, port))
     if result == 0:
         ports_open.append(port)
